@@ -1,73 +1,98 @@
 import Styles from "./LoginPage.module.css"
-import {Button, FormControl, TextField} from "@mui/material";
+import {Alert, Button, Fade, FormControl, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import getApiUrl from "../api/ApiUrl";
+import BoldedLink from "../components/BoldedLink";
+import getUrl from "../api/GetUrl";
+import {Form} from "react-router-dom";
 
 function LoginPage() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [responseStatus, setResponseStatus] = useState(-1)
+    const [error, setError] = useState(false)
+    const errorMessage = "coś poszło nie tak! :C"
 
     useEffect(() => {
-        // window.location.replace(getUrl());
-        // dodaj przekierowanie do mainPage jak user zalogowany na podstawie cookie
+        let cookie = getCookie("logedIn")
+
+        if (cookie != null) window.location.replace(getUrl())
+
+        function getCookie(cookie_name) {
+            const value = "; " + document.cookie
+            const parts = value.split("; " + cookie_name + "=")
+            if (parts.length === 2) return parts.pop().split(";").shift()
+            else return null
+        }
     })
+
+    useEffect(() => {
+        if ((responseStatus > 299 || responseStatus < 200) && responseStatus !== -1) {
+            setError(true)
+            setTimeout(() => {
+                setError(false)
+            }, 5000)
+            setResponseStatus(-1)
+
+        }
+    }, [error, responseStatus])
 
     return (
         <div className={Styles.main}>
             <div className={Styles.loginBox}>
-                <h1> login form</h1>
-                <form onSubmit={event => validateForm(event)}>
+                <h1>Logowanie</h1>
+                <Form onSubmit={event => validateForm(event)}>
                     <FormControl className={Styles.form}>
                         <TextField id="email"
                                    label="email"
                                    variant="outlined"
                                    className={Styles.formElement}
-                                   onChange={event => setEmail(event.target.value)}/>
+                                   onChange={event => setEmail(event.target.value)}
+                        />
                         <TextField type="password"
                                    id="password"
-                                   label="password"
+                                   label="hasło"
                                    variant="outlined"
                                    className={Styles.formElement}
-                                   onChange={event => setPassword(event.target.value)}/>
+                                   onChange={event => setPassword(event.target.value)}
+                        />
                         <Button type="submit"
                                 className={Styles.submitButton}
                                 variant="contained">
-                            Submit
+                            Zaloguj
                         </Button>
+                        <Fade in={error} unmountOnExit={true}>
+                            <Alert className={Styles.alert} variant="filled" severity="error">{errorMessage}</Alert>
+                        </Fade>
                     </FormControl>
-                </form>
+                </Form>
+                Nie masz konta?
+                <BoldedLink href="/register">
+                    Zarejestruj się
+                </BoldedLink>
             </div>
         </div>
     );
 
     async function validateForm(event) {
         event.preventDefault()
-        protectedTest()
-        await fetch(getApiUrl() + "auth/authenticate",
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
+
+        await fetch(getApiUrl() + "auth/authenticate", {
                 method: "POST",
                 body: JSON.stringify({
                     email: {email}.email,
                     password: {password}.password
-                })
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
             }
-        ).then(res => console.log(res.status))
-        protectedTest()
-
-    }
-
-    function protectedTest() {
-        fetch(getApiUrl() + "protected/test",
-            {
-                method: "GET",
-                credentials: "include",
-            }
-        ).then(res => console.log(res.status))
+        ).then(response => {
+            setResponseStatus(response.status)
+        })
     }
 }
 
