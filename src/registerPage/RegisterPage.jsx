@@ -1,12 +1,12 @@
 import Styles from "./RegisterPage.module.css"
-import {Alert, Button, Fade, FormControl, TextField} from "@mui/material";
+import {Alert, Button, CircularProgress, Fade, FormControl, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import getApiUrl from "../api/ApiUrl";
-import getUrl from "../api/GetUrl";
 import BoldedLink from "../components/BoldedLink";
 import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {Form} from "react-router-dom";
+import {formatDate} from "../api/Api";
 
 function RegisterPage() {
 
@@ -19,38 +19,31 @@ function RegisterPage() {
 
 
     const [responseStatus, setResponseStatus] = useState(-1)
+    const [responseMessage, setResponseMessage] = useState("")
     const [error, setError] = useState(false)
-    const errorMessage = "coś poszło nie tak! :C"
+    const [responseOk, setResponseOk] = useState(false)
+    const [waiting, setWaiting] = useState(false)
 
     useEffect(() => {
-        let cookie = getCookie("logedIn")
-
-        if (cookie != null) window.location.replace(getUrl())
-
-        function getCookie(cookie_name) {
-            const value = "; " + document.cookie
-            const parts = value.split("; " + cookie_name + "=")
-            if (parts.length === 2) return parts.pop().split(";").shift()
-            else return null
-        }
-    })
-
-    useEffect(() => {
-        if ((responseStatus > 299 || responseStatus < 200) && responseStatus !== -1) {
+        if (responseStatus === 200) {
+            setResponseOk(true)
+            setTimeout(() => {
+                setResponseOk(false)
+            }, 5000)
+        } else if ((responseStatus > 299 || responseStatus < 200) && responseStatus !== -1) {
             setError(true)
             setTimeout(() => {
                 setError(false)
             }, 5000)
-            setResponseStatus(-1)
-
         }
+        setResponseStatus(-1)
     }, [error, responseStatus])
 
     return (
         <div className={Styles.main}>
             <div className={Styles.registerBox}>
                 <h1>Rejestracja</h1>
-                <Form onSubmit={event => validateForm(event)}>
+                <Form onSubmit={event => validateForm(event)} className={Styles.form}>
                     <FormControl className={Styles.form}>
                         <TextField id="email"
                                    label="email"
@@ -90,6 +83,7 @@ function RegisterPage() {
                                 className={Styles.formElement}
                                 onChange={newValue => setBDate(newValue)}
                                 required={true}
+                                error={false}
                             />
                         </LocalizationProvider>
                         <TextField type="phone"
@@ -102,15 +96,24 @@ function RegisterPage() {
                                    InputLabelProps={{required: false}}
                                    inputProps={{maxLength: 9}}
                         />
+                        {waiting
+                            ? <CircularProgress/>
+                            : <Button type="submit"
+                                      className={Styles.submitButton}
+                                      variant="contained">
+                                Zarejestruj
+                            </Button>
+                        }
 
-                        <Button type="submit"
-                                className={Styles.submitButton}
-                                variant="contained">
-                            Zarejestruj
-                        </Button>
+
                         <Fade in={error} unmountOnExit={true}>
-                            <Alert className={Styles.alert} variant="filled" severity="error">{errorMessage}</Alert>
+                            <Alert className={Styles.alert} variant="filled" severity="error">{responseMessage}</Alert>
                         </Fade>
+                        <Fade in={responseOk} unmountOnExit={true}>
+                            <Alert className={Styles.alert} variant="filled"
+                                   severity="success">{responseMessage}</Alert>
+                        </Fade>
+
                     </FormControl>
                 </Form>
                 Masz już konto?
@@ -123,27 +126,32 @@ function RegisterPage() {
 
     async function validateForm(event) {
         event.preventDefault()
-
-        if (bDate < new Date())
-            await fetch(getApiUrl() + "auth/register", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        email: {email}.email,
-                        password: {password}.password,
-                        firstName: {firstName}.firstName,
-                        lastName: {lastName}.lastName,
-                        bDate: {bDate}.bDate,
-                        phoneNumber: {phoneNumber}.phoneNumber
-                    }),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    mode: 'cors'
+        setWaiting(true)
+        await fetch(getApiUrl() + "auth/register", {
+                method: "POST",
+                body: JSON.stringify({
+                    email: {email}.email,
+                    password: {password}.password,
+                    firstName: {firstName}.firstName,
+                    lastName: {lastName}.lastName,
+                    bDate: formatDate({bDate}.bDate),
+                    phoneNumber: {phoneNumber}.phoneNumber
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
-            ).then(response => {
-                setResponseStatus(response.status)
+            }
+        ).then(response => {
+            setResponseStatus(response.status)
+            response.json().then((message) => {
+                if (message.length < 1)
+                    setResponseMessage("error")
+                else
+                    setResponseMessage(message)
             })
+        })
+        setWaiting(false)
     }
 }
 

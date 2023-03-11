@@ -5,6 +5,7 @@ import getApiUrl from "../api/ApiUrl";
 import BoldedLink from "../components/BoldedLink";
 import getUrl from "../api/GetUrl";
 import {Form} from "react-router-dom";
+import {getCookie} from "../api/Api";
 
 function LoginPage() {
 
@@ -15,16 +16,9 @@ function LoginPage() {
     const errorMessage = "coś poszło nie tak! :C"
 
     useEffect(() => {
-        let cookie = getCookie("logedIn")
+        let cookie = getCookie("email")
 
         if (cookie != null) window.location.replace(getUrl())
-
-        function getCookie(cookie_name) {
-            const value = "; " + document.cookie
-            const parts = value.split("; " + cookie_name + "=")
-            if (parts.length === 2) return parts.pop().split(";").shift()
-            else return null
-        }
     })
 
     useEffect(() => {
