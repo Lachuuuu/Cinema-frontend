@@ -6,9 +6,17 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+<<<<<<< Updated upstream
   <React.StrictMode>
     <App />
   </React.StrictMode>
+=======
+    <React.StrictMode>
+        <div className="Background">
+            <Router/>
+        </div>
+    </React.StrictMode>
+>>>>>>> Stashed changes
 );
 
 // If you want to start measuring performance in your app, pass a function
