@@ -7,6 +7,7 @@ import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {Form} from "react-router-dom";
 import {formatDate} from "../api/Api";
+import TopBar from "../components/topBar/TopBar";
 
 function RegisterPage() {
 
@@ -40,88 +41,92 @@ function RegisterPage() {
     }, [error, responseStatus])
 
     return (
-        <div className={Styles.main}>
-            <div className={Styles.registerBox}>
-                <h1>Rejestracja</h1>
-                <Form onSubmit={event => validateForm(event)} className={Styles.form}>
-                    <FormControl className={Styles.form}>
-                        <TextField id="email"
-                                   label="email"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setEmail(event.target.value)}
-                                   required={true}
-                                   InputLabelProps={{required: false}}
-                        />
-                        <TextField type="password"
-                                   id="password"
-                                   label="hasło"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setPassword(event.target.value)}
-                                   required={true}
-                                   InputLabelProps={{required: false}}
-                        />
-                        <TextField id="firstName"
-                                   label="imię"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setFirstName(event.target.value)}
-                                   required={true}
-                                   InputLabelProps={{required: false}}
-                        />
-                        <TextField id="lastName"
-                                   label="nazwisko"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setLastName(event.target.value)}
-                                   required={true}
-                                   InputLabelProps={{required: false}}
-                        />
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <DateField
-                                className={Styles.formElement}
-                                onChange={newValue => setBDate(newValue)}
-                                required={true}
-                                error={false}
+        <>
+            <TopBar/>
+            <div className={Styles.main}>
+                <div className={Styles.registerBox}>
+                    <h1>Rejestracja</h1>
+                    <Form onSubmit={event => validateForm(event)} className={Styles.form}>
+                        <FormControl className={Styles.form}>
+                            <TextField id="email"
+                                       label="email"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setEmail(event.target.value)}
+                                       required={true}
+                                       InputLabelProps={{required: false}}
                             />
-                        </LocalizationProvider>
-                        <TextField type="phone"
-                                   id="phoneNumber"
-                                   label="numer telefonu"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setPhoneNumber(event.target.value)}
-                                   required={true}
-                                   InputLabelProps={{required: false}}
-                                   inputProps={{maxLength: 9}}
-                        />
-                        {waiting
-                            ? <CircularProgress/>
-                            : <Button type="submit"
-                                      className={Styles.submitButton}
-                                      variant="contained">
-                                Zarejestruj
-                            </Button>
-                        }
+                            <TextField type="password"
+                                       id="password"
+                                       label="hasło"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setPassword(event.target.value)}
+                                       required={true}
+                                       InputLabelProps={{required: false}}
+                            />
+                            <TextField id="firstName"
+                                       label="imię"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setFirstName(event.target.value)}
+                                       required={true}
+                                       InputLabelProps={{required: false}}
+                            />
+                            <TextField id="lastName"
+                                       label="nazwisko"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setLastName(event.target.value)}
+                                       required={true}
+                                       InputLabelProps={{required: false}}
+                            />
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <DateField
+                                    className={Styles.formElement}
+                                    onChange={newValue => setBDate(newValue)}
+                                    required={true}
+                                    error={false}
+                                />
+                            </LocalizationProvider>
+                            <TextField type="phone"
+                                       id="phoneNumber"
+                                       label="numer telefonu"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setPhoneNumber(event.target.value)}
+                                       required={true}
+                                       InputLabelProps={{required: false}}
+                                       inputProps={{maxLength: 9}}
+                            />
+                            {waiting
+                                ? <CircularProgress/>
+                                : <Button type="submit"
+                                          className={Styles.submitButton}
+                                          variant="contained">
+                                    Zarejestruj
+                                </Button>
+                            }
 
 
-                        <Fade in={error} unmountOnExit={true}>
-                            <Alert className={Styles.alert} variant="filled" severity="error">{responseMessage}</Alert>
-                        </Fade>
-                        <Fade in={responseOk} unmountOnExit={true}>
-                            <Alert className={Styles.alert} variant="filled"
-                                   severity="success">{responseMessage}</Alert>
-                        </Fade>
+                            <Fade in={error} unmountOnExit={true}>
+                                <Alert className={Styles.alert} variant="filled"
+                                       severity="error">{responseMessage}</Alert>
+                            </Fade>
+                            <Fade in={responseOk} unmountOnExit={true}>
+                                <Alert className={Styles.alert} variant="filled"
+                                       severity="success">{responseMessage}</Alert>
+                            </Fade>
 
-                    </FormControl>
-                </Form>
-                Masz już konto?
-                <BoldedLink href="/login">
-                    Zaloguj się
-                </BoldedLink>
+                        </FormControl>
+                    </Form>
+                    Masz już konto?
+                    <BoldedLink href="/login">
+                        Zaloguj się
+                    </BoldedLink>
+                </div>
             </div>
-        </div>
+        </>
     );
 
     async function validateForm(event) {

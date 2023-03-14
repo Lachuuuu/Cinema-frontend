@@ -1,0 +1,52 @@
+.appBar {
+    background-color: black;
+}
+
+.logoBox {
+    width: 20%;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    color: orange;
+}
+
+.personIcon {
+    font-size: xx-large;
+}
+
+.accountBox {
+    min-width: 200px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.searchBox {
+    width: 60%;
+}
+
+.accountLink {
+    color: white;
+}
+
+.logoLink {
+    text-decoration: none;
+}
+
+.searchFieldInput {
+    background-color: white;
+}
+
+.searchField {
+    width: 100%;
+}
+
+.searchForm {
+    width: 100%;
+}

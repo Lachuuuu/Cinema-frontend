@@ -6,6 +6,7 @@ import BoldedLink from "../components/BoldedLink";
 import getUrl from "../api/GetUrl";
 import {Form} from "react-router-dom";
 import {getCookie} from "../api/Api";
+import TopBar from "../components/topBar/TopBar";
 
 function LoginPage() {
 
@@ -33,40 +34,43 @@ function LoginPage() {
     }, [error, responseStatus])
 
     return (
-        <div className={Styles.main}>
-            <div className={Styles.loginBox}>
-                <h1>Logowanie</h1>
-                <Form onSubmit={event => validateForm(event)}>
-                    <FormControl className={Styles.form}>
-                        <TextField id="email"
-                                   label="email"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setEmail(event.target.value)}
-                        />
-                        <TextField type="password"
-                                   id="password"
-                                   label="hasło"
-                                   variant="outlined"
-                                   className={Styles.formElement}
-                                   onChange={event => setPassword(event.target.value)}
-                        />
-                        <Button type="submit"
-                                className={Styles.submitButton}
-                                variant="contained">
-                            Zaloguj
-                        </Button>
-                        <Fade in={error} unmountOnExit={true}>
-                            <Alert className={Styles.alert} variant="filled" severity="error">{errorMessage}</Alert>
-                        </Fade>
-                    </FormControl>
-                </Form>
-                Nie masz konta?
-                <BoldedLink href="/register">
-                    Zarejestruj się
-                </BoldedLink>
+        <>
+            <TopBar/>
+            <div className={Styles.main}>
+                <div className={Styles.loginBox}>
+                    <h1>Logowanie</h1>
+                    <Form onSubmit={event => validateForm(event)}>
+                        <FormControl className={Styles.form}>
+                            <TextField id="email"
+                                       label="email"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setEmail(event.target.value)}
+                            />
+                            <TextField type="password"
+                                       id="password"
+                                       label="hasło"
+                                       variant="outlined"
+                                       className={Styles.formElement}
+                                       onChange={event => setPassword(event.target.value)}
+                            />
+                            <Button type="submit"
+                                    className={Styles.submitButton}
+                                    variant="contained">
+                                Zaloguj
+                            </Button>
+                            <Fade in={error} unmountOnExit={true}>
+                                <Alert className={Styles.alert} variant="filled" severity="error">{errorMessage}</Alert>
+                            </Fade>
+                        </FormControl>
+                    </Form>
+                    Nie masz konta?
+                    <BoldedLink href="/register">
+                        Zarejestruj się
+                    </BoldedLink>
+                </div>
             </div>
-        </div>
+        </>
     );
 
     async function validateForm(event) {
