@@ -5,15 +5,9 @@ import Router from './router/Router'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<<<<<<< Updated upstream
-  <React.StrictMode>
-    <Router/>
-  </React.StrictMode>
-=======
     <React.StrictMode>
         <div className="Background">
             <Router/>
         </div>
     </React.StrictMode>
->>>>>>> Stashed changes
 );
