@@ -6,8 +6,9 @@ import BoldedLink from "../components/BoldedLink";
 import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {Form} from "react-router-dom";
-import {formatDate} from "../api/Api";
+import {formatDate, getCookie} from "../api/Api";
 import TopBar from "../components/topBar/TopBar";
+import getUrl from "../api/GetUrl";
 
 function RegisterPage() {
 
@@ -39,6 +40,10 @@ function RegisterPage() {
         }
         setResponseStatus(-1)
     }, [error, responseStatus])
+
+    useEffect(() => {
+        if (getCookie("firstName") != null) window.location.replace(getUrl())
+    })
 
     return (
         <>
@@ -139,13 +144,14 @@ function RegisterPage() {
                     password: {password}.password,
                     firstName: {firstName}.firstName,
                     lastName: {lastName}.lastName,
-                    bDate: formatDate({bDate}.bDate),
+                    birthDate: formatDate({bDate}.bDate),
                     phoneNumber: {phoneNumber}.phoneNumber
                 }),
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
+                credentials: "include"
             }
         ).then(response => {
             setResponseStatus(response.status)

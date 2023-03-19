@@ -14,10 +14,7 @@ code {
 
 html, body {
     height: 100%;
-}
-
-#root {
-    height: 100%;
+    width: 100%;
     background: rgb(217, 97, 210);
     background: radial-gradient(circle, rgba(217, 97, 210, 1) 0%, rgba(34, 39, 45, 1) 100%);
 }

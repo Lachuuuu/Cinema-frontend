@@ -14,12 +14,10 @@ function LoginPage() {
     const [password, setPassword] = useState("")
     const [responseStatus, setResponseStatus] = useState(-1)
     const [error, setError] = useState(false)
-    const errorMessage = "coś poszło nie tak! :C"
+    const [errorMessage, setErrorMessage] = useState("")
 
     useEffect(() => {
-        let cookie = getCookie("email")
-
-        if (cookie != null) window.location.replace(getUrl())
+        if (getCookie("firstName") != null) window.location.replace(getUrl())
     })
 
     useEffect(() => {
@@ -86,10 +84,16 @@ function LoginPage() {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                mode: 'cors'
+                credentials: "include"
             }
         ).then(response => {
             setResponseStatus(response.status)
+            response.json().then((message) => {
+                if (message.length < 1)
+                    setErrorMessage("error")
+                else
+                    setErrorMessage(message)
+            })
         })
     }
 }

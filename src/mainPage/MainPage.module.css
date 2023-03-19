@@ -1,0 +1,40 @@
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery {
+    height: 300px;
+}
+
+.movies {
+    height: 300px;
+}
+
+.movies > img {
+    height: 300px;
+    object-fit: fill !important
+}
+
+.moviesBox {
+    margin-top: 10px;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.movie {
+    width: 150px;
+    height: 300px;
+}
+
+.movie:hover {
+    transform: scale(1.1);
+}
+
+.newMoviesHeader {
+    color: white;
+    margin-left: 10px;
+}
