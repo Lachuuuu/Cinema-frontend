@@ -1,5 +1,3 @@
-import getUrl from "./GetUrl";
-
 export function formatDate(date) {
     return new Date(date).toISOString().substring(0, 10).replaceAll(",", "/")
 }
@@ -13,4 +11,9 @@ export function getCookie(cookie_name) {
 
 export function changeLocation(location) {
     document.location.replace(getUrl().concat(location))
+}
+
+export function getUrl() {
+    const host = window.location.hostname;
+    return "http://" + host + ":3000/"
 }

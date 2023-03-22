@@ -15,7 +15,7 @@ import {
 import {Form} from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import LogoLink from "../LogoLink";
-import {changeLocation, getCookie} from "../../api/Api";
+import {changeLocation, getCookie} from "../../api/Utils";
 import getApiUrl from "../../api/ApiUrl";
 import PersonIcon from "@mui/icons-material/Person";
 import AccountLink from "../AccountLink";
@@ -76,7 +76,7 @@ function TopBar() {
                             disableScrollLock={true}
                         >
                             <MenuItem>
-                                <div>Historia</div>
+                                <div>Moje Rezerwacje</div>
                             </MenuItem>
                             <MenuItem>
                                 <div id="user/settings"
@@ -111,7 +111,6 @@ function TopBar() {
             }
         )
         changeLocation("")
-        document.location.reload()
     }
 
     function openMenu(event) {

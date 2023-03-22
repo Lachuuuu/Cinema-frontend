@@ -1,0 +1,14 @@
+.updateBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    min-width: 300px;
+}
+
+.formElement {
+    margin-top: 5px;
+}

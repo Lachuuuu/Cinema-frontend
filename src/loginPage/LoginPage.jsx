@@ -3,9 +3,8 @@ import {Alert, Button, Fade, FormControl, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import getApiUrl from "../api/ApiUrl";
 import BoldedLink from "../components/BoldedLink";
-import getUrl from "../api/GetUrl";
 import {Form} from "react-router-dom";
-import {getCookie} from "../api/Api";
+import {getCookie, getUrl} from "../api/Utils";
 import TopBar from "../components/topBar/TopBar";
 
 function LoginPage() {

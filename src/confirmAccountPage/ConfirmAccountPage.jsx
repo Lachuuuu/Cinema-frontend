@@ -1,7 +1,7 @@
 import Styles from "./ConfirmAccountPage.module.css"
 import {useEffect, useState} from "react";
 import getApiUrl from "../api/ApiUrl";
-import getUrl from "../api/GetUrl";
+import {getUrl} from "../api/Utils";
 
 function ConfirmAccountPage() {
 

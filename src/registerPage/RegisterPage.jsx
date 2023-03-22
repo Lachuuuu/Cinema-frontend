@@ -6,9 +6,8 @@ import BoldedLink from "../components/BoldedLink";
 import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {Form} from "react-router-dom";
-import {formatDate, getCookie} from "../api/Api";
+import {formatDate, getCookie, getUrl} from "../api/Utils";
 import TopBar from "../components/topBar/TopBar";
-import getUrl from "../api/GetUrl";
 
 function RegisterPage() {
 

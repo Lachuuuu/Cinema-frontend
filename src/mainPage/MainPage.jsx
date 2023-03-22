@@ -6,7 +6,7 @@ import getApiUrl from "../api/ApiUrl";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
-import {changeLocation} from "../api/Api";
+import {changeLocation} from "../api/Utils";
 
 const images = [
     {
