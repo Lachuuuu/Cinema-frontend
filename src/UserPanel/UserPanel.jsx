@@ -1,53 +1,67 @@
 import Styles from "./UserPanel.module.css"
-import {useEffect, useState} from "react";
 import TopBar from "../components/topBar/TopBar";
-import getApiUrl from "../api/ApiUrl";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {useParams} from "react-router-dom";
 import GlassBox from "../components/GlassBox";
+import {Divider} from "@mui/material";
+import UserDetailsHeader from "../components/UserDetailsHeader";
+import {useNavigate} from "react-router-dom";
 
-function UserPanel() {
-
-    const [responseStatus, setResponseStatus] = useState(-1)
-    const [movie, setMovie] = useState(null)
-
-    const {movieId} = useParams()
-
-    useEffect(() => {
-
-    }, [])
+function UserPanel(props) {
+    const user = props.user
+    const setUser = props.setUser
+    const navigate = useNavigate()
 
     return (<>
             <div className={Styles.main}>
-                <TopBar/>
-                <GlassBox>
+                <TopBar user={user} setUser={setUser}/>
+                <GlassBox className={Styles.credentialsBox}>
+                    <h2>Twoje Dane</h2>
+                    {user != null &&
+                        <div className={Styles.userDetails}>
+                            <div>
+                                <UserDetailsHeader>email: </UserDetailsHeader>{user.email}
+                            </div>
+                            <div>
+                                <UserDetailsHeader>first name: </UserDetailsHeader>{user.firstName}
+                            </div>
+                            <div>
+                                <UserDetailsHeader>last name: </UserDetailsHeader>{user.lastName}
+                            </div>
+                            <div>
+                                <UserDetailsHeader>phone number: </UserDetailsHeader>{user.phoneNumber}
+                            </div>
+                            <div>
+                                <UserDetailsHeader>birth date: </UserDetailsHeader>{user.birthDate}
+                            </div>
+                        </div>
+                    }
+                </GlassBox>
+                <GlassBox className={Styles.optionsBox}>
+                    <div className={Styles.option} id="/user/settings/change/email"
+                         onClick={event => navigate(event.target.id)}>Change Email
+                    </div>
+                    <Divider className={Styles.divider}/>
+                    <div className={Styles.option} id="/user/settings/change/password"
+                         onClick={event => navigate(event.target.id)}>Change Password
+                    </div>
+                    <Divider className={Styles.divider}/>
+                    <div className={Styles.option} id="/user/settings/change/first_name"
+                         onClick={event => navigate(event.target.id)}>Change First Name
+                    </div>
+                    <Divider className={Styles.divider}/>
+                    <div className={Styles.option} id="/user/settings/change/last_name"
+                         onClick={event => navigate(event.target.id)}>Change Last Name
+                    </div>
+                    <Divider className={Styles.divider}/>
+                    <div className={Styles.option} id="/user/settings/change/phone_number"
+                         onClick={event => navigate(event.target.id)}>Change Phone Number
+                    </div>
+                    <Divider className={Styles.divider}/>
                 </GlassBox>
             </div>
         </>
     );
-
-    async function downloadMovie() {
-
-        await fetch(getApiUrl() + "movie/" + movieId, {
-                method: "POST",
-                body: JSON.stringify({
-                    //email: {email}.email,
-                    //password: {password}.password
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include"
-            }
-        ).then(response => {
-            setResponseStatus(response.status)
-            response.json().then((message) => {
-                setMovie(message)
-            })
-        })
-    }
 }
 
 export default UserPanel;

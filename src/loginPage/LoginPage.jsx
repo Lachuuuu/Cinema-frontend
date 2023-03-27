@@ -3,12 +3,14 @@ import {Alert, Button, Fade, FormControl, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 import getApiUrl from "../api/ApiUrl";
 import BoldedLink from "../components/BoldedLink";
-import getUrl from "../api/GetUrl";
-import {Form} from "react-router-dom";
-import {getCookie} from "../api/Api";
+import {Form, useNavigate} from "react-router-dom";
 import TopBar from "../components/topBar/TopBar";
 
-function LoginPage() {
+function LoginPage(props) {
+
+    const setUser = props.setUser
+    const user = props.user
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -17,8 +19,8 @@ function LoginPage() {
     const [errorMessage, setErrorMessage] = useState("")
 
     useEffect(() => {
-        if (getCookie("firstName") != null) window.location.replace(getUrl())
-    })
+        if (user != null) navigate("/")
+    }, [user])
 
     useEffect(() => {
         if ((responseStatus > 299 || responseStatus < 200) && responseStatus !== -1) {
@@ -33,7 +35,7 @@ function LoginPage() {
 
     return (
         <>
-            <TopBar/>
+            <TopBar user={user} setUser={setUser}/>
             <div className={Styles.main}>
                 <div className={Styles.loginBox}>
                     <h1>Logowanie</h1>
@@ -89,6 +91,8 @@ function LoginPage() {
         ).then(response => {
             setResponseStatus(response.status)
             response.json().then((message) => {
+                if (response.ok) setUser(message)
+
                 if (message.length < 1)
                     setErrorMessage("error")
                 else

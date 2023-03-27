@@ -1,27 +1,34 @@
 import Styles from "./MoviePage.module.css"
 import {useEffect, useState} from "react";
 import TopBar from "../components/topBar/TopBar";
-import getApiUrl from "../api/ApiUrl";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
 import {useParams} from "react-router-dom";
 import GlassBox from "../components/GlassBox";
 import MovieDescriptionHeader from "../components/MovieDescriptionHeader";
+import {Button} from "@mui/material";
+import ShowingDialog from "./ShowingDialog/ShowingDialog";
+import {downloadMovieByIdApi} from "../api/Api";
 
-function MoviePage() {
+function MoviePage(props) {
 
-    const [responseStatus, setResponseStatus] = useState(-1)
-    const [movie, setMovie] = useState(null)
+    const user = props.user
+    const setUser = props.setUser
 
     const {movieId} = useParams()
 
+    const [responseStatus, setResponseStatus] = useState(-1)
+    const [movie, setMovie] = useState(null)
+    const [open, setOpen] = useState(false)
+    const [showing, setShowing] = useState(null)
+
     useEffect(() => {
-        downloadMovie();
+        downloadMovie(movieId);
     }, [])
 
     return (<>
             <div className={Styles.main}>
-                <TopBar/>
+                <TopBar user={user} setUser={setUser}/>
                 {movie !== null &&
                     <GlassBox className={Styles.movieBox}>
                         <img src={movie.image}></img>
@@ -42,24 +49,24 @@ function MoviePage() {
                         <div>
                             <MovieDescriptionHeader>Age:</MovieDescriptionHeader> {movie.minAge}+
                         </div>
-
+                        <div>
+                            {movie.showings.map(it => <Button onClick={event => handleOpenDialog(event.target.value)}
+                                                              value={it.id}>{it.showingStartTime}</Button>)}
+                        </div>
                     </GlassBox>
                 }
             </div>
+            <ShowingDialog open={open} setOpen={setOpen} showing={showing} user={user}/>
         </>
     );
 
-    async function downloadMovie() {
+    function handleOpenDialog(id) {
+        setOpen(true)
+        setShowing(movie.showings.find(element => element.id == id))
+    }
 
-        await fetch(getApiUrl() + "movie/" + movieId, {
-                method: "GET",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include"
-            }
-        ).then(response => {
+    async function downloadMovie(movieId) {
+        downloadMovieByIdApi(movieId).then(response => {
             setResponseStatus(response.status)
             response.json().then((message) => {
                 setMovie(message)

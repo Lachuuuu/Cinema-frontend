@@ -6,11 +6,12 @@ import BoldedLink from "../components/BoldedLink";
 import {DateField, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {Form} from "react-router-dom";
-import {formatDate, getCookie} from "../api/Api";
+import {formatDate, getCookie, getUrl} from "../api/Utils";
 import TopBar from "../components/topBar/TopBar";
-import getUrl from "../api/GetUrl";
 
-function RegisterPage() {
+function RegisterPage(props) {
+    const user = props.user
+    const setUser = props.setUser
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -47,7 +48,7 @@ function RegisterPage() {
 
     return (
         <>
-            <TopBar/>
+            <TopBar user={user} setUser={setUser}/>
             <div className={Styles.main}>
                 <div className={Styles.registerBox}>
                     <h1>Rejestracja</h1>
