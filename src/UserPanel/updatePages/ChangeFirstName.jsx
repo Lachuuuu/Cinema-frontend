@@ -2,13 +2,17 @@ import Styles from "./UpdatePages.module.css"
 import {useEffect, useState} from "react";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {Form} from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
 import {Alert, Button, CircularProgress, Fade, FormControl, TextField} from "@mui/material";
 import TopBar from "../../components/topBar/TopBar";
 import GlassBox from "../../components/GlassBox";
-import getApiUrl from "../../api/ApiUrl";
+import {updateFirstNameApi} from "../../api/Api";
 
-function ChangeFirstName() {
+function ChangeFirstName(props) {
+
+    const user = props.user
+    const setUser = props.setUser
+    const navigate = useNavigate()
 
     const [responseStatus, setResponseStatus] = useState(-1)
     const [responseMessage, setResponseMessage] = useState("")
@@ -19,11 +23,12 @@ function ChangeFirstName() {
     const [waiting, setWaiting] = useState(false)
 
     useEffect(() => {
-
+        if (user == null) navigate("/")
     }, [])
 
     useEffect(() => {
         if (responseStatus === 200) {
+            setResponseMessage("First name changed successfully")
             setResponseOk(true)
             setTimeout(() => {
                 setResponseOk(false)
@@ -39,7 +44,7 @@ function ChangeFirstName() {
 
     return (<>
             <div className={Styles.main}>
-                <TopBar/>
+                <TopBar user={user} setUser={setUser}/>
                 <GlassBox className={Styles.updateBox}>
                     <h1>Change your first name</h1>
                     <Form onSubmit={event => submitForm(event)}>
@@ -88,25 +93,17 @@ function ChangeFirstName() {
     async function submitForm(event) {
         event.preventDefault()
         setWaiting(true)
-        await fetch(getApiUrl() + "user/change/first_name", {
-                method: "POST",
-                body: JSON.stringify({
-                    oldValue: {oldValue}.oldValue,
-                    newValue: {newValue}.newValue,
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include"
-            }
-        ).then(response => {
+        updateFirstNameApi(oldValue, newValue).then(response => {
             setResponseStatus(response.status)
-            response.json().then((message) => {
-                if (message.length < 1)
-                    setResponseMessage("error")
-                else
-                    setResponseMessage(message)
+            response.json().then((result) => {
+                if (response.ok) {
+                    setUser(result);
+                } else {
+                    if (result.length < 1)
+                        setResponseMessage("error")
+                    else
+                        setResponseMessage(result)
+                }
             })
         })
         setWaiting(false)

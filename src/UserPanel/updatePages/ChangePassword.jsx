@@ -2,13 +2,16 @@ import Styles from "./UpdatePages.module.css"
 import {useEffect, useState} from "react";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {Form} from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
 import {Alert, Button, CircularProgress, Fade, FormControl, TextField} from "@mui/material";
 import TopBar from "../../components/topBar/TopBar";
 import GlassBox from "../../components/GlassBox";
 import getApiUrl from "../../api/ApiUrl";
 
-function ChangePassword() {
+function ChangePassword(props) {
+    const user = props.user
+    const setUser = props.setUser
+    const navigate = useNavigate()
 
     const [responseStatus, setResponseStatus] = useState(-1)
     const [responseMessage, setResponseMessage] = useState("")
@@ -19,7 +22,7 @@ function ChangePassword() {
     const [waiting, setWaiting] = useState(false)
 
     useEffect(() => {
-
+        if (user == null) navigate("/")
     }, [])
 
     useEffect(() => {
@@ -39,7 +42,7 @@ function ChangePassword() {
 
     return (<>
             <div className={Styles.main}>
-                <TopBar/>
+                <TopBar user={user} setUser={setUser}/>
                 <GlassBox className={Styles.updateBox}>
                     <h1>Change your password</h1>
                     <Form onSubmit={event => submitForm(event)}>
