@@ -1,9 +1,14 @@
 import Styles from "./ConfirmAccountPage.module.css"
 import {useEffect, useState} from "react";
-import getApiUrl from "../api/ApiUrl";
-import {getUrl} from "../api/Utils";
+import TopBar from "../components/topBar/TopBar";
+import {useNavigate} from "react-router-dom";
+import {tryToActivateAccountApi} from "../api/Api";
 
-function ConfirmAccountPage() {
+function ConfirmAccountPage(props) {
+
+    const user = props.user
+    const setUser = props.setUser
+    const navigate = useNavigate()
 
     const [responseStatus, setResponseStatus] = useState(-1)
     const [responseMessage, setResponseMessage] = useState("")
@@ -11,37 +16,31 @@ function ConfirmAccountPage() {
     useEffect(() => {
         const pathParams = new URLSearchParams(window.location.search)
         const token = pathParams.get('token')
-        tryToActivateAccount()
+        tryToActivateAccount(token)
 
-        async function tryToActivateAccount() {
-            await fetch(getApiUrl() + "auth/confirm-account?token=" + token, {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
+        async function tryToActivateAccount(token) {
+            await tryToActivateAccountApi(token).then(response => {
                 setResponseStatus(response.status)
                 response.json().then((message) => {
                     setResponseMessage(message)
                 })
             })
-
             setTimeout(goBackToLoginPage, 5000)
-
         }
     }, [])
 
     function goBackToLoginPage() {
-        window.location.replace(getUrl() + "login")
+        navigate("/login")
     }
 
-    return (
-        <div className={Styles.main}>
-            <div className={Styles.messageBox}>
-                <h1>{responseMessage}</h1>
+    return (<>
+            <TopBar user={user} setUser={setUser}/>
+            <div className={Styles.main}>
+                <div className={Styles.messageBox}>
+                    <h1>{responseMessage}</h1>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

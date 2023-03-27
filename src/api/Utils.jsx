@@ -10,7 +10,7 @@ export function getCookie(cookie_name) {
 }
 
 export function changeLocation(location) {
-    document.location.replace(getUrl().concat(location))
+    //useNavigate("/".concat(location))
 }
 
 export function getUrl() {

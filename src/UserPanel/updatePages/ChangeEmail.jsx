@@ -2,14 +2,16 @@ import Styles from "./UpdatePages.module.css"
 import {useEffect, useState} from "react";
 import 'react-awesome-slider/dist/styles.css';
 import "react-image-gallery/styles/css/image-gallery.css";
-import {Form} from "react-router-dom";
+import {Form, useNavigate} from "react-router-dom";
 import {Alert, Button, CircularProgress, Fade, FormControl, TextField} from "@mui/material";
 import TopBar from "../../components/topBar/TopBar";
 import GlassBox from "../../components/GlassBox";
-import getApiUrl from "../../api/ApiUrl";
-import {changeLocation} from "../../api/Utils";
+import {updateEmailApi} from "../../api/Api";
 
-function ChangeEmail() {
+function ChangeEmail(props) {
+    const user = props.user
+    const setUser = props.setUser
+    const navigate = useNavigate()
 
     const [responseStatus, setResponseStatus] = useState(-1)
     const [responseMessage, setResponseMessage] = useState("")
@@ -20,18 +22,15 @@ function ChangeEmail() {
     const [waiting, setWaiting] = useState(false)
 
     useEffect(() => {
-
+        if (user == null) navigate("/")
     }, [])
 
     useEffect(() => {
         if (responseStatus === 200) {
             setResponseOk(true)
-            setResponseMessage("Email changed successfully, you will be directed to login page in 5 seconds")
             setTimeout(() => {
                 setResponseOk(false)
-            }, 5000)
-            setTimeout(() => {
-                changeLocation("login")
+                navigate("/login")
             }, 5000)
         } else if ((responseStatus > 299 || responseStatus < 200) && responseStatus !== -1) {
             setError(true)
@@ -44,7 +43,7 @@ function ChangeEmail() {
 
     return (<>
             <div className={Styles.main}>
-                <TopBar/>
+                <TopBar user={user} setUser={setUser}/>
                 <GlassBox className={Styles.updateBox}>
                     <h1>Change your email</h1>
                     <Form onSubmit={event => submitForm(event)}>
@@ -93,19 +92,7 @@ function ChangeEmail() {
     async function submitForm(event) {
         event.preventDefault()
         setWaiting(true)
-        await fetch(getApiUrl() + "user/change/email", {
-                method: "POST",
-                body: JSON.stringify({
-                    oldValue: {oldValue}.oldValue,
-                    newValue: {newValue}.newValue,
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include"
-            }
-        ).then(response => {
+        updateEmailApi({oldValue}.oldValue, {newValue}.newValue).then(response => {
             setResponseStatus(response.status)
             response.json().then((message) => {
                 if (message.length < 1)

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import Router from './router/Router'
+import App from "./app/App";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <div className="Background">
-        <Router/>
+        <App/>
     </div>
 );

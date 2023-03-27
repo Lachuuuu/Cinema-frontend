@@ -1,0 +1,69 @@
+.dialogHeader {
+    display: flex;
+    justify-content: center;
+}
+
+.ticketTypesBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.typesOfSeats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.seatFlor {
+    background-color: gray;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatFree {
+    background-color: green;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatTaken {
+    background-color: red;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatsBox {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border: 1px solid white;
+    justify-content: center;
+}
+
+.rowBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.break {
+    width: 100%;
+    border: 1px solid white;
+}
+
+.seat:hover {
+    scale: 1.1;
+}
+
+.seatChoosen {
+    background-color: aqua;
+}
+
+.displayNone {
+    display: none;
+}

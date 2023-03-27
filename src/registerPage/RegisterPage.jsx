@@ -9,7 +9,9 @@ import {Form} from "react-router-dom";
 import {formatDate, getCookie, getUrl} from "../api/Utils";
 import TopBar from "../components/topBar/TopBar";
 
-function RegisterPage() {
+function RegisterPage(props) {
+    const user = props.user
+    const setUser = props.setUser
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -46,7 +48,7 @@ function RegisterPage() {
 
     return (
         <>
-            <TopBar/>
+            <TopBar user={user} setUser={setUser}/>
             <div className={Styles.main}>
                 <div className={Styles.registerBox}>
                     <h1>Rejestracja</h1>
