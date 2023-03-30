@@ -1,0 +1,24 @@
+.centerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.optionsBox {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divider {
+    width: 100%;
+}
+
+.option {
+    padding: 5px;
+}
+
+.option:hover {
+    scale: 1.1;
+}

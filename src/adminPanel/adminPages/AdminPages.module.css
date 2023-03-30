@@ -1,0 +1,63 @@
+.centerBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.select {
+    width: 200px;
+}
+
+.formBox {
+    width: 100%;
+}
+
+.seatFlor {
+    background-color: gray;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatFree {
+    background-color: green;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatTaken {
+    background-color: red;
+    min-width: 15px;
+    min-height: 15px;
+    border: 1px solid white;
+}
+
+.seatsBox {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border: 1px solid white;
+    justify-content: center;
+}
+
+.rowBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.break {
+    width: 100%;
+    border: 1px solid white;
+}
+
+.displayNone {
+    display: none;
+}
+
+.movieImagePreview {
+    width: 150px;
+    height: 300px;
+}

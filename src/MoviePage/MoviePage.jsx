@@ -26,6 +26,10 @@ function MoviePage(props) {
         downloadMovie(movieId);
     }, [])
 
+    useEffect(() => {
+        console.log(movie);
+    }, [movie])
+
     return (<>
             <div className={Styles.main}>
                 <TopBar user={user} setUser={setUser}/>
