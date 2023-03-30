@@ -15,7 +15,7 @@ import {
 import {Form, useNavigate} from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
 import LogoLink from "../LogoLink";
-import {getCookie, getUrl} from "../../api/Utils";
+import {checkIfAdmin, getCookie, getUrl} from "../../api/Utils";
 import PersonIcon from "@mui/icons-material/Person";
 import AccountLink from "../AccountLink";
 import {getUserByTokenApi, logoutApi} from "../../api/Api";
@@ -24,6 +24,7 @@ function TopBar(props) {
     const user = props.user
     const setUser = props.setUser
     const navigate = useNavigate()
+    const isAdmin = checkIfAdmin(user)
 
     const [menuOpen, setMenuOpen] = useState(false)
     const [anchorEl, setAnchorEl] = React.useState(null)
@@ -99,6 +100,14 @@ function TopBar(props) {
                                     Ustawienia
                                 </div>
                             </MenuItem>
+                            {isAdmin &&
+                                <MenuItem>
+                                    <div id="/admin/panel"
+                                         onClick={event => navigate(event.target.id)}>
+                                        Admin Panel
+                                    </div>
+                                </MenuItem>
+                            }
                             <MenuItem onClick={logout}>
                                 <Button variant="outlined">Wyloguj</Button>
                             </MenuItem>

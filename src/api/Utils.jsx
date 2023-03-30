@@ -9,11 +9,15 @@ export function getCookie(cookie_name) {
     else return null
 }
 
-export function changeLocation(location) {
-    //useNavigate("/".concat(location))
-}
-
 export function getUrl() {
     const host = window.location.hostname;
     return "http://" + host + ":3000/"
 }
+
+export function checkIfAdmin(user) {
+    if (user == null) return false
+    if (user.roles == null) return false
+    if (user.roles.filter(it => it.name === 'ADMIN').length > 0) return true
+    else return false
+}
+

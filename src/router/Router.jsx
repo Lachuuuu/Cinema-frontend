@@ -14,6 +14,16 @@ import {useEffect} from "react";
 import {getUserByTokenApi} from "../api/Api";
 import SearchPage from "../searchPage/SearchPage";
 import ReservationPage from "../reservationPage/ReservationPage";
+import AdminPanel from "../adminPanel/AdminPanel";
+import UpdateShowing from "../adminPanel/adminPages/showings/UpdateShowing";
+import RemoveShowing from "../adminPanel/adminPages/showings/RemoveShowing";
+import AddShowing from "../adminPanel/adminPages/showings/AddShowing";
+import AddHall from "../adminPanel/adminPages/halls/AddHall";
+import RemoveHall from "../adminPanel/adminPages/halls/RemoveHall";
+import RemoveMovie from "../adminPanel/adminPages/movies/RemoveMovie";
+import AddMovie from "../adminPanel/adminPages/movies/AddMovie";
+import AddGenre from "../adminPanel/adminPages/genres/AddGenre";
+import RemoveGenre from "../adminPanel/adminPages/genres/RemoveGenre";
 
 function Router(props) {
 
@@ -78,6 +88,46 @@ function Router(props) {
         {
             path: "/user/reservations",
             element: <ReservationPage user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/panel",
+            element: <AdminPanel user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/add/showing",
+            element: <AddShowing user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/remove/showing",
+            element: <RemoveShowing user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/update/showing",
+            element: <UpdateShowing user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/add/hall",
+            element: <AddHall user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/remove/hall",
+            element: <RemoveHall user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/remove/movie",
+            element: <RemoveMovie user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/add/movie",
+            element: <AddMovie user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/add/genre",
+            element: <AddGenre user={user} setUser={setUser}/>
+        },
+        {
+            path: "/admin/remove/genre",
+            element: <RemoveGenre user={user} setUser={setUser}/>
         },
 
     ])
